@@ -23,7 +23,7 @@ int		main(int ac, char **av)
     parse_args(ac, av);
     env.mlx = mlx_init();
     if (env.mlx == NULL)
-        return (0);
+        return (-1);
     env.win = mlx_new_window(env.mlx, WIDTH, HEIGHT, "Fract'ol");
     env.img = mlx_new_image(env.mlx, WIDTH, HEIGHT);
     env.idata = mlx_get_data_addr(env.img, &(env.ibits), \

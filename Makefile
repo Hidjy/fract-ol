@@ -6,12 +6,12 @@
 #    By: laime <laime@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/12/10 16:56:15 by laime             #+#    #+#              #
-#    Updated: 2015/01/04 17:42:51 by laime            ###   ########.fr        #
+#    Updated: 2015/01/04 19:46:07 by laime            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fractol
-SRC = fractol.c
+SRC = fractol.c hook.c g.c g2.c
 HEADERS = fractol.h
 OBJ = $(SRC:.c=.o)
 OPT = -Wall -Werror -Wextra

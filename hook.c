@@ -18,7 +18,7 @@
 
 int     draw(t_env *env)
 {
-    ft_bzero(env->idata, env->ibits * 4);
+    ft_bzero(env->idata, env->isizeline * HEIGHT);
     img_draw(env);
     mlx_put_image_to_window(env->mlx, env->win, env->img, 0, 0);
     return (0);
@@ -31,14 +31,14 @@ int		mouse(int button, int x, int y, t_env *env)
     if (button == 1) // Default : 5
     {
         env->zoom *= 1.1;
-        env->xoff -= x / 5;
-        env->yoff -= y / 5;
+        env->xoff -= x - WIDTH / 2;
+        env->yoff -= y - HEIGHT / 2;
     }
     else if (button == 3) // Default : 4
     {
         env->zoom /= 1.1;
-        env->xoff += x / 5;
-        env->yoff += y / 5;
+        env->xoff += x - WIDTH / 2;
+        env->yoff += y - HEIGHT / 2;
     }
     //ft_putendl(ft_itoa(button));
     draw(env);
@@ -100,9 +100,9 @@ void       mandelbrot(t_env *env, double e, int itmax)
             while (cabs(Z) <= 2 && i < itmax)
                 Z = Z * Z + C,
                 i++;
-            img_put_pixel(env, \
-            (x + 2 + (env->xoff / WIDTH) / env->zoom) * 200 * env->zoom + env->xoff, \
-            (y + 2 + (env->xoff / WIDTH) / env->zoom) * 150 * env->zoom + env->yoff, \
+            img_put_pixel(env,
+            (x + 2 + (env->xoff / WIDTH) / env->zoom) * 200 * env->zoom + env->xoff,
+            (y + 2 + (env->xoff / WIDTH) / env->zoom) * 150 * env->zoom + env->yoff,
             color(i, itmax));
             y += e;
         }
@@ -113,11 +113,13 @@ void       mandelbrot(t_env *env, double e, int itmax)
 void	img_draw(t_env *env)
 {
     mandelbrot(env, 0.005 / env->zoom, 84);
+    /*
     t_point pt1, pt2;
     pt1 = pt_get(400, 0, 0);
     pt2 = pt_get(400, 600, 0);
-    img_put_line(env, &pt1, &pt2, 0xFFFFFF);
+    img_put_line(env, &pt1, &pt2, 0x777777);
     pt1 = pt_get(0, 300, 0);
     pt2 = pt_get(800, 300, 0);
-    img_put_line(env, &pt1, &pt2, 0xFFFFFF);
+    img_put_line(env, &pt1, &pt2, 0x777777);
+    //*/
 }
