@@ -22,7 +22,7 @@ all: $(NAME)
 .PHONY: libft clean fclean re
 
 $(NAME): libft
-	@gcc $(OPT) -c $(SRC)
+	@gcc $(OPT) -c $(SRC) -I /opt/X11/include/
 	@gcc -o $(NAME) $(OBJ) $(LIBS)
 
 libft:

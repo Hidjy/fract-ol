@@ -20,6 +20,7 @@ void    stop(char *str);
 void    parse_args(int ac, char **av);
 int     draw(t_env *env);
 int		mouse(int button, int x, int y, t_env *env);
+int     mousemove(int x, int y, t_env *env);
 int		key(int key, t_env *env);
 
 #endif

@@ -37,6 +37,9 @@ typedef struct	s_env
 	float		zoom;
 	int			xoff;
 	int			yoff;
+	double		jx;
+	double		jy;
+	int			f;
 }				t_env;
 
 t_point			*pt_new(int x, int y, int z);

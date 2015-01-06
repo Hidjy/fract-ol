@@ -24,21 +24,28 @@ int     draw(t_env *env)
     return (0);
 }
 
+int     mousemove(int x, int y, t_env *env)
+{
+    env->jx = ((double)x / (double)WIDTH) * 2.0 - 1.0;
+    env->jy = ((double)y / (double)HEIGHT) * 2.0 - 1.0;
+    if (x % 5 == 0 || y % 5 == 0)
+        draw(env);
+    return (0);
+}
+
 int		mouse(int button, int x, int y, t_env *env)
 {
-    (void)x;
-    (void)y;
     if (button == 1) // Default : 5
     {
         env->zoom *= 1.1;
-        env->xoff -= x - WIDTH / 2;
-        env->yoff -= y - HEIGHT / 2;
+        env->xoff -= (x - WIDTH / 2) / env->zoom;
+        env->yoff -= (y - HEIGHT / 2) / env->zoom;
     }
     else if (button == 3) // Default : 4
     {
         env->zoom /= 1.1;
-        env->xoff += x - WIDTH / 2;
-        env->yoff += y - HEIGHT / 2;
+        env->xoff += (x - WIDTH / 2) / env->zoom;
+        env->yoff += (y - HEIGHT / 2) / env->zoom;
     }
     //ft_putendl(ft_itoa(button));
     draw(env);
@@ -102,17 +109,48 @@ void       mandelbrot(t_env *env, double e, int itmax)
                 i++;
             img_put_pixel(env,
             (x + 2 + (env->xoff / WIDTH) / env->zoom) * 200 * env->zoom + env->xoff,
-            (y + 2 + (env->xoff / WIDTH) / env->zoom) * 150 * env->zoom + env->yoff,
+            (y + 2 + (env->yoff / HEIGHT) / env->zoom) * 150 * env->zoom + env->yoff,
             color(i, itmax));
             y += e;
         }
         x += e;
     }
 }
+/*
+void       julia(t_env *env, double e, int itmax)
+{
+    double x;
+    double y;
+    double complex Z;
+    double complex C;
+    int i;
 
+    x = -2 + (env->xoff / WIDTH) / env->zoom;
+    while (x <= 2 + (env->xoff / WIDTH) / env->zoom)
+    {
+        y = -2 + (env->yoff / HEIGHT) / env->zoom;
+        while (y <= 2 + (env->yoff / HEIGHT) / env->zoom)
+        {
+            i = 0;
+            C = env->jx + env->jy * I;
+            Z = x + y * I;
+            while (cabs(Z) <= 2 && i < itmax)
+                Z = Z * Z + C,
+                i++;
+                img_put_pixel(env,
+                (x + 2 + (env->xoff / WIDTH) / env->zoom) * 200 * env->zoom + env->xoff,
+                (y + 2 + (env->yoff / HEIGHT) / env->zoom) * 150 * env->zoom + env->yoff,
+                color(i, itmax));
+                y += e;
+            }
+            x += e;
+        }
+    }
+//*/
 void	img_draw(t_env *env)
 {
-    mandelbrot(env, 0.005 / env->zoom, 84);
+     mandelbrot(env, 0.005 / env->zoom, 84);
+    //julia(env, 0.005 / env->zoom, 84);
     /*
     t_point pt1, pt2;
     pt1 = pt_get(400, 0, 0);
