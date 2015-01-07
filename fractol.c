@@ -35,7 +35,7 @@ int		main(int ac, char **av)
     mlx_expose_hook(env.win, draw, &env);
     mlx_key_hook(env.win, key, &env);
     mlx_mouse_hook(env.win, mouse, &env);
-    mlx_hook(env.win, MotionNotify, PointerMotionMask, mousemove, &env);
+    //mlx_hook(env.win, MotionNotify, PointerMotionMask, mousemove, &env);
     mlx_loop(env.mlx);
     return (0);
 }
