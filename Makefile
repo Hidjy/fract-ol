@@ -22,17 +22,17 @@ all: $(NAME)
 .PHONY: libft clean fclean re
 
 $(NAME): libft
-	@gcc $(OPT) -c $(SRC) -I /opt/X11/include/
-	@gcc -o $(NAME) $(OBJ) $(LIBS)
+	gcc $(OPT) -c $(SRC) -I /opt/X11/include/
+	gcc -o $(NAME) $(OBJ) $(LIBS)
 
 libft:
-	@make -C libft fclean
-	@make -C libft
+	make -C libft fclean
+	make -C libft
 
 clean:
-	@/bin/rm -f $(OBJ) $(HEADERS:.h=.h.gch)
+	/bin/rm -f $(OBJ) $(HEADERS:.h=.h.gch)
 
 fclean: clean
-	@/bin/rm -f $(NAME)
+	/bin/rm -f $(NAME)
 
 re: fclean all

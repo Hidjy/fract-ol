@@ -17,6 +17,7 @@
 
 # define WIDTH 800
 # define HEIGHT 600
+# define ZOOM 1.1
 
 typedef struct	s_point
 {
@@ -24,6 +25,12 @@ typedef struct	s_point
 	int			y;
 	int			z;
 }				t_point;
+
+typedef struct	s_complex
+{
+	float		x;
+	float		y;
+}				t_complex;
 
 typedef struct	s_env
 {
