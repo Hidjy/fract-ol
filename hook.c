@@ -103,12 +103,32 @@ int     color(int n, int max)
     //return get_color(remap(n, 0, max / 2), remap(n, 0, max), remap(n, 0, max * 2));
 }
 
-void       mandelbrot(t_env *env, int itmax)
+int         mandelbrot(t_env *env, int x, int y, int itmax)
+{
+    int     i;
+    t_complex z;
+    t_complex c;
+    t_complex tmp;
+
+    i = 0;
+    c.x = (((x + env->xoff) / env->zoom / WIDTH) * 4 - 2);
+    c.y = (((y + env->yoff) / env->zoom / HEIGHT) * 4 - 2);
+    z.x = 0.0;
+    z.y = 0.0;
+    while ((z.x * z.x + z.y * z.y) < 4 && i < itmax)
+    {
+        tmp = z;
+        z.x = tmp.x * tmp.x - tmp.y * tmp.y + c.x;
+        z.y = tmp.x * tmp.y + tmp.x * tmp.y + c.y;
+        i++;
+    }
+    return (i);
+}
+
+void       fractal(t_env *env, int itmax)
 {
     int x;
     int y;
-    t_complex z;
-    t_complex c;
     int i;
 
     x = 0;
@@ -117,15 +137,7 @@ void       mandelbrot(t_env *env, int itmax)
         y = 0;
         while (y <= HEIGHT)
         {
-            i = 0;
-            c.x = (((x + env->xoff) / env->zoom / WIDTH) * 4 - 2);
-            c.y = (((y + env->yoff) / env->zoom / HEIGHT) * 4 - 2);
-            z.x = 0.0;
-            z.y = 0.0;
-            while ((z.x * z.x + z.y * z.y) < 4 && i < itmax)
-                z.x = z.x * z.x + c.x, // TODO : Fix complex calcul
-                z.y = z.y * z.y + c.y, //
-                i++;
+            i = mandelbrot(env, x, y, itmax);
             img_put_pixel(env, x, y, color(i, itmax));
             y += 1;
         }
@@ -171,7 +183,7 @@ void       sierpinski(t_env *env)
 
 void	img_draw(t_env *env)
 {
-    mandelbrot(env, 42);
+    fractal(env, 42);
     //sierpinski(env);
     /*
     t_point pt1, pt2;
