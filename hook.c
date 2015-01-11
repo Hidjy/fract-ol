@@ -15,183 +15,88 @@
 #include "g.h"
 #include "fractol.h"
 
-int     draw(t_env *env)
+int		draw(t_env *env)
 {
-    ft_bzero(env->idata, env->isizeline * HEIGHT);
-    img_draw(env);
-    mlx_put_image_to_window(env->mlx, env->win, env->img, 0, 0);
-    return (0);
+	ft_bzero(env->idata, env->isizeline * HEIGHT);
+	img_draw(env);
+	mlx_put_image_to_window(env->mlx, env->win, env->img, 0, 0);
+	if (!(DEBUG))
+		return (0);
+	mlx_string_put(env->mlx, env->win, 10, 10, 0x777777, ft_itoa(env->zoom));
+	return (0);
 }
 
-int     mousemove(int x, int y, t_env *env)
+int		mousemove(int x, int y, t_env *env)
 {
-    env->jx = ((double)x / (double)WIDTH) * 2.0 - 1.0;
-    env->jy = ((double)y / (double)HEIGHT) * 2.0 - 1.0;
-    if (x % 5 == 0 || y % 5 == 0)
-        draw(env);
-    return (0);
+	env->jx = ((double)x / (double)WIDTH) * 2.0 - 1.0;
+	env->jy = ((double)y / (double)HEIGHT) * 2.0 - 1.0;
+	if (x % 5 == 0 || y % 5 == 0)
+		draw(env);
+	return (0);
 }
 
 int		mouse(int button, int x, int y, t_env *env)
 {
-    (void)x;
-    (void)y;
-    if (button == 1) // Default : 5
-    {
-        env->zoom *= ZOOM;
-        env->xoff = env->xoff * ZOOM + ((WIDTH - (WIDTH / ZOOM)) / 2) * ZOOM
-                    + (x - WIDTH / 2) * ZOOM;
-        env->yoff = env->yoff * ZOOM + ((HEIGHT - (HEIGHT / ZOOM)) / 2) * ZOOM
-                    + (y - HEIGHT / 2) * ZOOM;
-    }
-    else if (button == 3) // Default : 4
-    {
-        env->zoom /= ZOOM;
-        env->xoff = env->xoff / ZOOM - ((WIDTH - (WIDTH / ZOOM)) / 2) / ZOOM
-                    + (x - WIDTH / 2) * ZOOM;
-        env->yoff = env->yoff / ZOOM - ((HEIGHT - (HEIGHT / ZOOM)) / 2) / ZOOM
-                    + (y - HEIGHT / 2) * ZOOM;
-    }
-    //ft_putendl(ft_itoa(button));
-    draw(env);
-    return (0);
+	(void)x;
+	(void)y;
+	if (button == 4)
+	{
+		env->zoom *= ZOOM;
+		env->xoff = env->xoff * ZOOM + ((WIDTH - (WIDTH / ZOOM)) / 2) * ZOOM
+					+ (x - WIDTH / 2) * ZOOM;
+		env->yoff = env->yoff * ZOOM + ((HEIGHT - (HEIGHT / ZOOM)) / 2) * ZOOM
+					+ (y - HEIGHT / 2) * ZOOM;
+	}
+	else if (button == 5)
+	{
+		env->zoom /= ZOOM;
+		env->xoff = env->xoff / ZOOM - ((WIDTH - (WIDTH / ZOOM)) / 2) / ZOOM
+					+ (x - WIDTH / 2) * ZOOM;
+		env->yoff = env->yoff / ZOOM - ((HEIGHT - (HEIGHT / ZOOM)) / 2) / ZOOM
+					+ (y - HEIGHT / 2) * ZOOM;
+	}
+	draw(env);
+	return (0);
 }
 
 int		key(int key, t_env *env)
 {
-    if (key == 65307)
-        stop("User exit.");
-    else if (key == 65362)
-        env->yoff += 50;
-    else if (key == 65364)
-        env->yoff -= 50;
-    else if (key == 65361)
-        env->xoff += 50;
-    else if (key == 65363)
-        env->xoff -= 50;
-    else
-        ft_putendl(ft_itoa(key));
-    draw(env);
-    return (0);
-}
-
-int     get_color(int r, int g, int b)
-{
-    return (r * 0x10000 + g * 0x100 + b);
-}
-
-int     remap(int x, int in_min, int in_max)
-{
-    return ((x - in_min) * (255 - 0) / (in_max - in_min) + 0);
-}
-
-int     color(int n, int max)
-{
-    //*
-    double  i;
-    double  r;
-    double  g;
-    double  b;
-
-    i = (double)n / (double)max;
-    r = sin(i * M_PI_2) / 2;
-    g = sin(i * M_PI);
-    b = sin(1 - i * M_PI_2) / 2 + 0.5;
-
-    return get_color(0xFF * r, 0xFF * g, 0xFF * b);
-    //*/
-    //return get_color(remap(n, 0, max / 2), remap(n, 0, max), remap(n, 0, max * 2));
-}
-
-int         mandelbrot(t_env *env, int x, int y, int itmax)
-{
-    int     i;
-    t_complex z;
-    t_complex c;
-    t_complex tmp;
-
-    i = 0;
-    c.x = (((x + env->xoff) / env->zoom / WIDTH) * 4 - 2);
-    c.y = (((y + env->yoff) / env->zoom / HEIGHT) * 4 - 2);
-    z.x = 0.0;
-    z.y = 0.0;
-    while ((z.x * z.x + z.y * z.y) < 4 && i < itmax)
-    {
-        tmp = z;
-        z.x = tmp.x * tmp.x - tmp.y * tmp.y + c.x;
-        z.y = tmp.x * tmp.y + tmp.x * tmp.y + c.y;
-        i++;
-    }
-    return (i);
-}
-
-void       fractal(t_env *env, int itmax)
-{
-    int x;
-    int y;
-    int i;
-
-    x = 0;
-    while (x <= WIDTH)
-    {
-        y = 0;
-        while (y <= HEIGHT)
-        {
-            i = mandelbrot(env, x, y, itmax);
-            img_put_pixel(env, x, y, color(i, itmax));
-            y += 1;
-        }
-        x += 1;
-    }
-}
-
-int     is_sierpinski_pixel_filled(int x, int y)
-{
-    x = (x < 0) ? -x : x;
-    y = (y < 0) ? -y : y;
-    while(x > 0 || y > 0)
-    {
-        if(x % 3 == 1 && y % 3 == 1)
-            return (0);
-        x /= 3;
-        y /= 3;
-    }
-    return (1);
-}
-
-void       sierpinski(t_env *env)
-{
-    int x;
-    int y;
-
-    x = 0 - env->xoff;
-    while (x <= (WIDTH - env->xoff))
-    {
-        y = 0 - env->yoff;
-        while (y <= (HEIGHT - env->yoff))
-        {
-            if (is_sierpinski_pixel_filled(x, y))
-                img_put_pixel(env,
-                 (x + env->xoff),
-                 (y + env->yoff),
-                 0xFFFFFF);
-            y += 1;
-        }
-        x += 1;
-    }
+	if (key == 65307)
+		stop("User exit.");
+	else if (key == 65362)
+		env->yoff -= 50;
+	else if (key == 65364)
+		env->yoff += 50;
+	else if (key == 65361)
+		env->xoff -= 50;
+	else if (key == 65363)
+		env->xoff += 50;
+	else if (key == 65365)
+		env->zoom *= 1.1,
+		env->xoff = env->xoff * ZOOM + ((WIDTH - (WIDTH / ZOOM)) / 2) * ZOOM,
+		env->yoff = env->yoff * ZOOM + ((HEIGHT - (HEIGHT / ZOOM)) / 2) * ZOOM;
+	else if (key == 65366)
+		env->zoom /= 1.1,
+		env->xoff = env->xoff / ZOOM - ((WIDTH - (WIDTH / ZOOM)) / 2) / ZOOM,
+		env->yoff = env->yoff / ZOOM - ((HEIGHT - (HEIGHT / ZOOM)) / 2) / ZOOM;
+	else if (key == 32)
+		env->p = (env->p == 3) ? 0 : env->p + 1;
+	draw(env);
+	return (0);
 }
 
 void	img_draw(t_env *env)
 {
-    fractal(env, 42);
-    //sierpinski(env);
-    /*
-    t_point pt1, pt2;
-    pt1 = pt_get(400, 0, 0);
-    pt2 = pt_get(400, 600, 0);
-    img_put_line(env, &pt1, &pt2, 0x777777);
-    pt1 = pt_get(0, 300, 0);
-    pt2 = pt_get(800, 300, 0);
-    img_put_line(env, &pt1, &pt2, 0x777777);
-    //*/
+	int		i;
+
+	fractal(env, ITMAX);
+	if (DEBUG)
+	{
+		i = WIDTH;
+		while (i--)
+			img_put_pixel(env, i, HEIGHT / 2, 0x777777);
+		i = HEIGHT;
+		while (i--)
+			img_put_pixel(env, WIDTH / 2, i, 0x777777);
+	}
 }

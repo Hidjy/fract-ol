@@ -10,17 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
 # include "g.h"
 
-void    stop(char *str);
-void    parse_args(int ac, char **av);
-int     draw(t_env *env);
+void	stop(char *str);
+void	parse_args(t_env *env, int ac, char **av);
+int		draw(t_env *env);
 int		mouse(int button, int x, int y, t_env *env);
-int     mousemove(int x, int y, t_env *env);
+int		mousemove(int x, int y, t_env *env);
 int		key(int key, t_env *env);
 
 #endif

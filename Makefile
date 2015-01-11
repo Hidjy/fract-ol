@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = fractol
-SRC = fractol.c hook.c g.c g2.c
+SRC = fractol.c fractal.c hook.c g.c
 HEADERS = fractol.h
 OBJ = $(SRC:.c=.o)
 OPT = -Wall -Werror -Wextra

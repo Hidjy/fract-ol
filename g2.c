@@ -33,7 +33,6 @@ void	pt_set(t_point *pt, int x, int y, int z)
 	pt->z = z;
 }
 
-
 t_point	pt_get(int x, int y, int z)
 {
 	t_point	pt;

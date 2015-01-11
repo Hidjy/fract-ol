@@ -17,7 +17,9 @@
 
 # define WIDTH 800
 # define HEIGHT 600
+# define ITMAX 42
 # define ZOOM 1.1
+# define DEBUG 0
 
 typedef struct	s_point
 {
@@ -46,14 +48,18 @@ typedef struct	s_env
 	int			yoff;
 	double		jx;
 	double		jy;
-	int			f;
+	char		f;
+	int			p;
 }				t_env;
 
-t_point			*pt_new(int x, int y, int z);
-t_point			pt_get(int x, int y, int z);
 void			img_put_pixel(t_env *env, int x, int y, int color);
 void			img_put_line(t_env *env, t_point *pt1, t_point *pt2, int color);
 void			img_draw(t_env *env);
 void			img_fill(t_env *env, int color);
+void			fractal(t_env *env, int itmax);
+int				color(int n, int max, int p);
+int				mandelbrot(t_env *env, int x, int y, int itmax);
+int				julia(t_env *env, int x, int y, int itmax);
+int				douady(t_env *env, int x, int y, int itmax);
 
 #endif
