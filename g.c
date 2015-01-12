@@ -15,6 +15,32 @@
 #include "g.h"
 #include "libft/libft.h"
 
+int		color(int n, int max, int p)
+{
+	double	i;
+	int		r;
+	int		g;
+	int		b;
+
+	i = (double)n / max;
+	r = (sin(i * M_PI * 2 - M_PI_2) + 1) / 2 * 255;
+	g = (sin(i * M_PI * 4 - M_PI_2) + 1) / 2 * 255;
+	b = (sin(i * M_PI * 8 - M_PI_2) + 1) / 2 * 255;
+	if (p == 1)
+		i = r,
+		r = g,
+		g = i;
+	else if (p == 2)
+		i = g,
+		g = b,
+		b = i;
+	else if (p == 3)
+		i = r,
+		r = b,
+		b = i;
+	return (0x10000 * r + 0x100 * g + b);
+}
+
 void		img_put_pixel(t_env *env, int x, int y, int color)
 {
 	char			*data;

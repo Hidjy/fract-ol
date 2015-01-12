@@ -48,11 +48,13 @@ void	parse_args(t_env *env, int ac, char **av)
 {
 	(void)av;
 	(void)env;
-	if (ac != 2 || (av[1][0] != 'm' && av[1][0] != 'j' && av[1][0] != 'd'))
-		stop("Usage : ./fractol <fractal: m, j or d>");
+	if (ac != 2 || (av[1][0] != 'm' && av[1][0] != 'j' && av[1][0] != 'd' && av[1][0] != 's'))
+		stop("Usage : ./fractol <fractal: m, j, d or s>");
 	env->f = av[1][0];
 	env->xoff = 0;
 	env->yoff = 0;
 	env->zoom = 1;
+	if (env->f == 's')
+		env->zoom = 1.0 / 81.0;
 	env->p = 0;
 }

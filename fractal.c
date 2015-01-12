@@ -13,32 +13,6 @@
 #include <math.h>
 #include "g.h"
 
-int		color(int n, int max, int p)
-{
-	double	i;
-	int		r;
-	int		g;
-	int		b;
-
-	i = (double)n / max;
-	r = (sin(i * M_PI * 2 - M_PI_2) + 1) / 2 * 255;
-	g = (sin(i * M_PI * 4 - M_PI_2) + 1) / 2 * 255;
-	b = (sin(i * M_PI * 8 - M_PI_2) + 1) / 2 * 255;
-	if (p == 1)
-		i = r,
-		r = g,
-		g = i;
-	else if (p == 2)
-		i = g,
-		g = b,
-		b = i;
-	else if (p == 3)
-		i = r,
-		r = b,
-		b = i;
-	return (0x10000 * r + 0x100 * g + b);
-}
-
 int		mandelbrot(t_env *env, int x, int y, int itmax)
 {
 	int			i;
@@ -105,6 +79,26 @@ int		douady(t_env *env, int x, int y, int itmax)
 	return (i);
 }
 
+int		sierpinski(t_env *env, int x, int y, int itmax)
+{
+	int		i;
+
+	i = 0;
+	x = (x + env->xoff) / env->zoom;
+	x = (x < 0) ? -x : x;
+	y = (y + env->yoff) / env->zoom;
+	y = (y < 0) ? -y : y;
+	while((x > 0 || y > 0) && i < itmax)
+	{
+		if(x % 3 == 1 && y % 3 == 1)
+			return (i);
+		x /= 3;
+		y /= 3;
+		i++;
+	}
+	return (itmax);
+}
+
 void	fractal(t_env *env, int itmax)
 {
 	int x;
@@ -123,6 +117,8 @@ void	fractal(t_env *env, int itmax)
 				i = julia(env, x, y, itmax);
 			else if (env->f == 'd')
 				i = douady(env, x, y, itmax);
+			else if (env->f == 's')
+				i = sierpinski(env, x, y, itmax);
 			img_put_pixel(env, x, y, color(i, itmax, env->p));
 			y += 1;
 		}
