@@ -51,9 +51,9 @@ int		mouse(int button, int x, int y, t_env *env)
 	{
 		env->zoom /= ZOOM;
 		env->xoff = env->xoff / ZOOM - ((WIDTH - (WIDTH / ZOOM)) / 2) / ZOOM
-					+ (x - WIDTH / 2) * ZOOM - (x - WIDTH / 2);
+					- (x - WIDTH / 2) * ZOOM + (x - WIDTH / 2);
 		env->yoff = env->yoff / ZOOM - ((HEIGHT - (HEIGHT / ZOOM)) / 2) / ZOOM
-					+ (y - HEIGHT / 2) * ZOOM - (y - HEIGHT / 2);
+					- (y - HEIGHT / 2) * ZOOM + (y - HEIGHT / 2);
 	}
 	draw(env);
 	return (0);
