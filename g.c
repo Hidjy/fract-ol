@@ -15,7 +15,7 @@
 #include "g.h"
 #include "libft/libft.h"
 
-int		color(int n, int max, int p)
+int			color(int n, int max, int p)
 {
 	double	i;
 	int		r;

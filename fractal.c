@@ -88,9 +88,9 @@ int		sierpinski(t_env *env, int x, int y, int itmax)
 	x = (x < 0) ? -x : x;
 	y = (y + env->yoff) / env->zoom;
 	y = (y < 0) ? -y : y;
-	while((x > 0 || y > 0) && i < itmax)
+	while ((x > 0 || y > 0) && i < itmax)
 	{
-		if(x % 3 == 1 && y % 3 == 1)
+		if (x % 3 == 1 && y % 3 == 1)
 			return (i);
 		x /= 3;
 		y /= 3;
