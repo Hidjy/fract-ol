@@ -47,7 +47,7 @@ int		mouse(int button, int x, int y, t_env *env)
 		env->yoff = env->yoff * ZOOM + ((HEIGHT - (HEIGHT / ZOOM)) / 2) * ZOOM
 					+ (y - HEIGHT / 2) * ZOOM - (y - HEIGHT / 2);
 	}
-	else if (button == 5 && env->zoom < 50000)
+	else if (button == 5 && env->zoom > 0)
 	{
 		env->zoom /= ZOOM;
 		env->xoff = env->xoff / ZOOM - ((WIDTH - (WIDTH / ZOOM)) / 2) / ZOOM
@@ -75,7 +75,7 @@ int		key(int key, t_env *env)
 		env->zoom *= 1.1,
 		env->xoff = env->xoff * ZOOM + ((WIDTH - (WIDTH / ZOOM)) / 2) * ZOOM,
 		env->yoff = env->yoff * ZOOM + ((HEIGHT - (HEIGHT / ZOOM)) / 2) * ZOOM;
-	else if (key == 65366 && env->zoom < 50000)
+	else if (key == 65366 && env->zoom > 0)
 		env->zoom /= 1.1,
 		env->xoff = env->xoff / ZOOM - ((WIDTH - (WIDTH / ZOOM)) / 2) / ZOOM,
 		env->yoff = env->yoff / ZOOM - ((HEIGHT - (HEIGHT / ZOOM)) / 2) / ZOOM;
