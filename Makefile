@@ -19,20 +19,22 @@ LIBS = -lm -L /usr/X11/lib -lmlx -lXext -lX11 -L libft -lft
 
 all: $(NAME)
 
-.PHONY: libft clean fclean re
+.PHONY: $(NAME) libft clean fclean re
 
 $(NAME): libft
 	gcc $(OPT) -c $(SRC) -I /opt/X11/include/
 	gcc -o $(NAME) $(OBJ) $(LIBS)
 
 libft:
-	make -C libft fclean
 	make -C libft
 
 clean:
+	make -C libft clean
 	/bin/rm -f $(OBJ) $(HEADERS:.h=.h.gch)
 
-fclean: clean
+fclean:
+	make -C libft fclean
+	/bin/rm -f $(OBJ) $(HEADERS:.h=.h.gch)
 	/bin/rm -f $(NAME)
 
 re: fclean all

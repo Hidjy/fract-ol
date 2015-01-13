@@ -39,7 +39,7 @@ int		mouse(int button, int x, int y, t_env *env)
 {
 	(void)x;
 	(void)y;
-	if (button == 4)
+	if (button == 4 && env->zoom < 50000)
 	{
 		env->zoom *= ZOOM;
 		env->xoff = env->xoff * ZOOM + ((WIDTH - (WIDTH / ZOOM)) / 2) * ZOOM
@@ -47,7 +47,7 @@ int		mouse(int button, int x, int y, t_env *env)
 		env->yoff = env->yoff * ZOOM + ((HEIGHT - (HEIGHT / ZOOM)) / 2) * ZOOM
 					+ (y - HEIGHT / 2) * ZOOM - (y - HEIGHT / 2);
 	}
-	else if (button == 5)
+	else if (button == 5 && env->zoom < 50000)
 	{
 		env->zoom /= ZOOM;
 		env->xoff = env->xoff / ZOOM - ((WIDTH - (WIDTH / ZOOM)) / 2) / ZOOM
@@ -71,16 +71,16 @@ int		key(int key, t_env *env)
 		env->xoff -= 50;
 	else if (key == 65363)
 		env->xoff += 50;
-	else if (key == 65365)
+	else if (key == 65365 && env->zoom < 50000)
 		env->zoom *= 1.1,
 		env->xoff = env->xoff * ZOOM + ((WIDTH - (WIDTH / ZOOM)) / 2) * ZOOM,
 		env->yoff = env->yoff * ZOOM + ((HEIGHT - (HEIGHT / ZOOM)) / 2) * ZOOM;
-	else if (key == 65366)
+	else if (key == 65366 && env->zoom < 50000)
 		env->zoom /= 1.1,
 		env->xoff = env->xoff / ZOOM - ((WIDTH - (WIDTH / ZOOM)) / 2) / ZOOM,
 		env->yoff = env->yoff / ZOOM - ((HEIGHT - (HEIGHT / ZOOM)) / 2) / ZOOM;
 	else if (key == 32)
-		env->p = (env->p == 3) ? 0 : env->p + 1;
+		env->p = (env->p == 5) ? 0 : env->p + 1;
 	draw(env);
 	return (0);
 }

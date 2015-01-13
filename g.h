@@ -19,7 +19,7 @@
 # define HEIGHT 600
 # define ITMAX 42
 # define ZOOM 1.1
-# define DEBUG 0
+# define DEBUG 1
 
 typedef struct	s_point
 {
